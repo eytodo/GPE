@@ -41,9 +41,9 @@ int main() {
             else if( str == "east" ) {
                 temp = top ;
                 top = west ;
-                east = bottom ;
+                west = bottom ;
                 bottom = east ;
-                west = temp ;
+                east = temp ;
             }
             
             num-- ;
