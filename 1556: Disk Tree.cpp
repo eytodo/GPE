@@ -15,7 +15,7 @@ struct Node {
     }
 } mNode[N];
 
-static int ident = 0 ;
+static int indent = 0 ;
 
 int num_node = 0 ;
 
@@ -32,13 +32,13 @@ void createNodes( vector<string> vName ) {
 }
 
 void print_nodes( Node node ) {
-    for( int i = 0 ; i < ident ; ++i )
+    for( int i = 0 ; i < indent ; ++i )
         cout << " " ;
     cout << node.name << endl ;
     for( auto & n : node.subNodes ) {
-        ident++ ;
+        indent++ ;
         print_nodes( mNode[n.second] ) ;
-        ident-- ;
+        indent-- ;
     }
 }
 
