@@ -1,43 +1,52 @@
 // 24941:Uncompress
 
-# include <iostream>
-# include <vector>
-# include <cstring>
+# include <bits/stdc++.h>
 
 using namespace std ;
 
+vector<string> vtemp ;
 vector<string> vWord ;
 
 void solve() {
-    char c ;
+    string sentence ;
     string word ;
-    do {
-        c = cin.peek()  ;
-        if( isalpha( c ) ) {
-            word = "" ;
-            do {
-                word += cin.get() ;
-                c = cin.peek() ;
-            } while( isalpha( c ) ) ;
+    
+    while( getline( cin, sentence ) ) {
+        if( sentence == "0" )
+            break ;
+        sentence.push_back( '\n' ) ;
+        vtemp.push_back( sentence ) ;
+    }
 
-            cout << word ;
-            vWord.insert( vWord.begin(), word ) ;
+    int num = 0 ;
+    for( auto & str : vtemp ) {
+        for( auto & c : str ) {
+            if( isdigit( c ) ) {
+                num *= 10 ;
+                num += c - '0' ;
+            }
+            else if( isalpha( c ) ) {
+                word.push_back( c ) ;
+            }
+            else {
+                if( !word.empty() ) {
+                    vWord.insert( vWord.begin(), word ) ;
+                    cout << word ;
+                    word.clear() ;
+                }
+                if( num ) {
+                    int idx = num - 1 ;
+                    num = 0 ;
+                    string s = vWord[idx] ;
+                    vWord.erase( vWord.begin() + idx ) ;
+                    vWord.insert( vWord.begin(), s ) ;
+                    cout << s ;
+                }
+                
+                cout << c ;
+            }
         }
-        else if( isdigit( c ) ) {
-            if( c == '0' )
-                return ;
-            int idx ;
-            cin >> idx ;
-            word = vWord[idx-1] ;
-            cout << word ;
-            vWord.erase( vWord.begin() + idx - 1 ) ;
-            vWord.insert( vWord.begin(), word ) ;
-        }
-        else {
-            c = cin.get() ;
-            cout << c ;
-        }
-    } while( 1 ) ;
+    }
 }
 
 int main() {
