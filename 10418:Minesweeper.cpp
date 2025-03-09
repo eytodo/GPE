@@ -1,15 +1,14 @@
 // 10418:Minesweeper
 
-# include <iostream>
-# include <cstring>
+# include <bits/stdc++.h>
 
 using namespace std ;
 
 int n, m ;
-char field[100][100] ;
+char field[101][101] ;
 
 int check( int i, int j ) {
-    if( i < 0 || i == n  || j < 0 || j == n )
+    if( i < 0 || i >= n  || j < 0 || j >= m )
         return 0 ;
     return ( field[i][j] == '*' ) ? 1 : 0 ;
 }
@@ -28,22 +27,22 @@ int MineNum( int i, int j ) {
 }
 
 int main() {
-    int count = 1 ;
+    int count = 0 ;
     while( cin >> n >> m ) {
-        cin.get() ;
         if( n == 0 && m == 0 )
             break ;
         for( int i = 0 ; i < n ; i++ ) {
-            for( int j = 0 ; j < m ; j++ )
-                field[i][j] = cin.get() ;
-            cin.get() ;
+            cin >> field[i] ;
         }
 
-        cout << "Field #" << count++ << ":\n" ;
+        if( count > 0 )
+            cout << endl ;
+
+        cout << "Field #" << ++count << ":\n" ;
         for( int i = 0 ; i < n ; i++ ) {
             for( int j = 0 ; j < m ; j++ ) {
                 if( field[i][j] == '*' )
-                    cout << '*' ;
+                    cout << "*" ;
                 else
                     cout << MineNum( i, j ) ;
             }
@@ -51,8 +50,7 @@ int main() {
             cout << endl ;
         }
 
-        cout << endl ;
-        memset( field, '0', sizeof( char ) * n * m ) ;
+        memset( field, '0', sizeof( field ) ) ;
     }
 
     return 0 ;
