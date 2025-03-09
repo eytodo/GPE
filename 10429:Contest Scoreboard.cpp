@@ -1,90 +1,74 @@
 // 10429:Contest Scoreboard
 
-# include <iostream>
-# include <vector>
-# include <algorithm>
-# include <cstring>
+# include <bits/stdc++.h>
 
 using namespace std ;
 
 struct PlayerInfo {
     int id ;
-    bool solved[9] ;
-    int penaltytime[9] ;
-    int solvedProblem ;
-    int totaltime ;
+    bool solved[10] = { 0, 0, 0, 0, 0 ,0, 0, 0, 0, 0 } ;
+    int penalty[10] = { 0, 0, 0, 0, 0 ,0, 0, 0, 0, 0 } ;
+    int solvedProblem = 0 ;
+    int totalTime = 0 ;
 } ;
 
-vector<PlayerInfo> vPlayer ;
-
-void solve( int id, int problem, int time, char tag ) {
-    bool find = false ;
-    int idx ;
-    for( int i = 0 ; i < vPlayer.size() ; i++ ) {
-        if( vPlayer[i].id == id ) {
-            find = true ;
-            idx = i ;
-            break ;
+void solve( vector<PlayerInfo> & vPlayer, int id, int problem, int time, char tag ) {
+    if( tag == 'R' || tag == 'U' || tag == 'E' )
+        return ;
+    
+    if( vPlayer[id].solved[problem] == false ) {        
+        if( tag == 'C' ) {
+            vPlayer[id].solved[problem] = true ;
+            vPlayer[id].totalTime += time + vPlayer[id].penalty[problem] * 20 ;
+            vPlayer[id].solvedProblem++ ;
         }
-    }
-
-    if( !find ) {
-        PlayerInfo i ;
-        i.id = id ;
-        memset( i.solved, 0, sizeof( i.solved ) ) ;
-        memset( i.penaltytime, 0, sizeof( i.penaltytime ) ) ;
-        i.solvedProblem = 0 ;
-        i.totaltime = 0 ;
-        vPlayer.push_back( i ) ;
-        idx = vPlayer.size() - 1 ;
-    }
-
-    if( tag == 'C' ) {
-        if( vPlayer[idx].solved[problem-1] == false ) {
-            vPlayer[idx].solved[problem-1] = true ;
-            vPlayer[idx].totaltime += time + vPlayer[idx].penaltytime[problem-1] ;
-            if( vPlayer[idx].solvedProblem < problem )
-                vPlayer[idx].solvedProblem = problem ;
+        else if( tag == 'I' ) {
+            vPlayer[id].penalty[problem]++ ;
         }
-    }
-    else if( tag == 'I' ) {
-        if( vPlayer[idx].solved[problem-1] == false )
-            vPlayer[idx].penaltytime[problem-1] += 20 ;
     }
 }
 
 bool compare( PlayerInfo p1, PlayerInfo p2 ) {
-    if( p1.solvedProblem > p2.solvedProblem )
-        return true ;
-    else if( p1.solvedProblem == p2.solvedProblem ) {
-        if( p1.totaltime < p2.totaltime )
-            return true ;
-        else if( p1.totaltime == p2.totaltime ) {
-            if( p1.id < p2.id )
-                return true ;
-        }
+    if( p1.solvedProblem == p2.solvedProblem ) {
+        if( p1.totalTime == p2.totalTime )
+            return p1.id < p2.id ;
+        return p1.totalTime < p2.totalTime ;
     }
 
-    return false ;
+    return p1.solvedProblem > p2.solvedProblem ;
 }
 
 int main() {
     int num, user, problem, time ;
-    cin >> num ;
-    cin.get() ;
     char c ;
+    cin >> num ;
+    cin.ignore() ;
+    cin.ignore() ;
+    string str ;
     while( num-- ) {
-        cin.get() ;
-        while( cin.peek() != '\n' ) {
-            cin >> user >> problem >> time >> c ;
-            solve( user, problem, time, c ) ;
-            cin.get() ;
+        vector<PlayerInfo> vPlayer( 101 ) ;
+        bitset<101> bPlay ;
+        while( getline( cin, str ) ) {
+            if( str == "" )
+                break ;
+            istringstream in( str ) ;
+            in >> user >> problem >> time >> c ;
+            bPlay[user] = 1 ;
+            vPlayer[user].id = user ;
+            solve( vPlayer, user, problem, time, c ) ;
         }
 
-        sort( vPlayer.begin(), vPlayer.end(), compare ) ;
-        for( int i = 0 ; i < vPlayer.size() ; i++ )
-            cout << vPlayer[i].id << " " << vPlayer[i].solvedProblem << " " << vPlayer[i].totaltime << endl ;
-        vPlayer.clear() ;
+        vector<PlayerInfo> vAns ;
+        for( int i = 1 ; i < 101 ; ++i ) {
+            if( bPlay[i] )
+                vAns.push_back( vPlayer[i] ) ;
+        }
+
+        sort( vAns.begin(), vAns.end(), compare ) ;
+        for( int i = 0 ; i < vAns.size() ; i++ )
+            cout << vAns[i].id << " " << vAns[i].solvedProblem << " " << vAns[i].totalTime << endl ;
+        if( num )
+            cout << endl ;
     }
 
     return 0 ;
