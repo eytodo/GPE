@@ -1,7 +1,6 @@
 // 21964:Fill the Containers
 
-# include <iostream>
-# include <vector>
+# include <bits/stdc++.h>
 
 using namespace std ;
 
@@ -23,56 +22,51 @@ bool Binary_search( vector<int> vSet, int target ) {
 }
 */
 
-int ContainerFit( vector<int> vSet, int size ) {
+int numOfContainers( vector<int> vNum, int size ) {
     int sum = 0 ;
-    int amount = 0 ;
-    for( int i = 0 ; i < vSet.size() ; i++ ) {
-        sum += vSet[i] ;
-        if( sum > size ) {
-            sum = vSet[i] ;
-            amount++ ;
-        }
-        else if( sum == size ) {
+    int count = 0 ;
+    for( int i = 0 ; i < vNum.size() ; ++i ) {
+        sum += vNum[i] ;
+        if( sum == size ) {
             sum = 0 ;
-            amount++ ;
+            count++ ;
+        }
+        else if( sum > size ) {
+            sum = vNum[i] ;
+            count++ ;
         }
     }
 
     if( sum > 0 )
-        amount++ ;
-    return amount ;
+        count++ ;
+    return count ;
 }
 
 int main() {
-    vector<int> vSet ;
     int n, m ;
-    int num ;
-    int low, sum ;    // maximal capacity of milk & capacity of the whole milk
     while( cin >> n >> m ) {
-        low = 0, sum = 0 ;
-        while( n-- ) {
-            cin >> num ;
-            if( low < num )
-                low = num ;
-            sum += num ;
-            vSet.push_back( num ) ;
+        vector<int> vNum ;
+        int maxOfCapacity = 0, sumOfCapacity = 0 ;
+        for( int i = 0 ; i < n ; ++i ) {
+            int temp ;
+            cin >> temp ;
+            if( maxOfCapacity < temp )
+                maxOfCapacity = temp ;
+            sumOfCapacity += temp ;
+            vNum.push_back( temp ) ;
         }
 
-        int left = low ;
-        int right = sum ;
-
-        // try to find the container with minimal possible capacity which has maximal capacity
-        while( left < right ) {    
+        int left = maxOfCapacity ;
+        int right = sumOfCapacity ;
+        while( left < right ) {
             int mid = ( left + right ) / 2 ;
-            if( ContainerFit( vSet, mid ) <= m )
+            if( numOfContainers( vNum, mid ) <= m )
                 right = mid ;
             else
                 left = mid + 1 ;
         }
 
-        cout << right << endl ;
-        vSet.clear() ;
+        cout << left << endl ;
+        vNum.clear() ;
     }
-
-    return 0 ;
 }
