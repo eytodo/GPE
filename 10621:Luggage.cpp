@@ -67,7 +67,7 @@ bool findSum( vector<int> vSet, int size, int sum ) {
     for( int i = 0 ; i < size ; i++ ) {
         cout << setw(4) << vSet[i] ;
         for( int j = 0 ; j < sum + 1 ; j++ ) {
-            cout << "  " << ( subset[i][j] ) ? 'T' : 'F' ;
+            cout << "  " << ( subset[i+1][j] ) ? 'T' : 'F' ;
         }
 
         cout << endl ;
