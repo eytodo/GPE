@@ -1,8 +1,6 @@
 // 24461:Sum of Consecutive Prime Numbers
 
-# include <iostream>
-# include <map>
-# include <vector>
+# include <bits/stdc++.h>
 
 using namespace std ;
 
@@ -28,13 +26,13 @@ void makeSet() {
     }
 
     int sum ;
-    for( int i = 0 ; i < vSet.size() - 1 ; i++ ) {
+    for( int i = 0 ; i < vSet.size() ; i++ ) {
         sum = vSet[i] ;
-        if( mSet[sum]  )
+        if( mSet[sum] )
             mSet[sum]++ ;
         else
             mSet[sum] = 1 ;
-        for( int j = i+1 ; j < vSet.size() ; j++ ) {
+        for( int j = i + 1 ; j < vSet.size() ; j++ ) {
             sum += vSet[j] ;
             if( mSet[sum]  )
                 mSet[sum]++ ;
