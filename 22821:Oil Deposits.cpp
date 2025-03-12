@@ -1,17 +1,16 @@
 // 22821:Oil Deposits
 
-# include <iostream>
-# include <cstring>
+# include <bits/stdc++.h>
 
 using namespace std ;
 
 int m, n ;
 
-char Grid[100][100] ;
-bool visited[100][100] ;
+char Grid[101][101] ;
+bool visited[101][101] ;
 
 void Traversal( int i, int j ) {
-    if( !( i < 0 || i == m || j < 0 || j == n ) ) {
+    if( !( i < 0 || i >= m || j < 0 || j >= n ) ) {
         if( !visited[i][j] && Grid[i][j] == '@' ) {
             visited[i][j] = true ;
             Traversal( i - 1, j ) ;
@@ -29,7 +28,7 @@ void Traversal( int i, int j ) {
 int main() {
     int oils ;
     while( cin >> m >> n ) {
-        cin.get() ;     // get rid of end-of-line
+        cin.ignore() ;     // get rid of end-of-line
         if( m == 0 )
             break ;
         memset( Grid, '\0', sizeof( Grid ) ) ;
@@ -40,7 +39,7 @@ int main() {
                 Grid[i][j] = cin.get() ;
             }
 
-            cin.get() ;
+            cin.ignore() ;
         }
 
         for( int i = 0 ; i < m ; i++ ) {
